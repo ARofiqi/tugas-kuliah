@@ -1,0 +1,15 @@
+{
+  "name": "praktikum1",
+  "version": "1.0.0",
+  "description": "for learning",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "js",
+    "nodeJS"
+  ],
+  "author": "rofiqi",
+  "license": "ISC"
+}
