@@ -17,7 +17,7 @@ console.log(`Murid dengan nilai tertinggi`);
 console.log(`Nama \t: ${studentScore[2].name}`);
 console.log(`Score \t: ${studentScore[2].score}`);
 
-var motoGP = [
+let motoGP = [
   {
     circuit: "Losail",
     location: "Qatar",
