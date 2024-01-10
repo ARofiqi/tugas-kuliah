@@ -80,50 +80,51 @@ describe("siswaController", () => {
       expect(selectResult[0].alamat == updatedData.alamat);
     });
   });
-});
-describe("SiswaController Delete", () => {
-  let insertedId;
 
-  //sebelum pengujian, tambahkan datasiswa kedalam database untuk dihapus
-  beforeAll(async () => {
-    const insertQuery = `INSERT INTO siswa (nama, umur, alamat) VALUES ('test', 20, 'Jl. test')`;
-    const insertResult = await new Promise((resolve) => {
-      conn.query(insertQuery, (err, result) => {
-        if (err) {
-          console.error("Insert error : ", err);
-        }
-        insertedId = result.insertId;
-        resolve();
+  describe("SiswaController Delete", () => {
+    let insertedId;
+
+    //sebelum pengujian, tambahkan datasiswa kedalam database untuk dihapus
+    beforeAll(async () => {
+      const insertQuery = `INSERT INTO siswa (nama, umur, alamat) VALUES ('test', 20, 'Jl. test')`;
+      const insertResult = await new Promise((resolve) => {
+        conn.query(insertQuery, (err, result) => {
+          if (err) {
+            console.error("Insert error : ", err);
+          }
+          insertedId = result.insertId;
+          resolve();
+        });
       });
     });
-  });
 
-  // pengujian untuk delete mahasiswa
-  it("should delete a student", async () => {
-    const response = await request(app).delete(`/siswa/${insertedId}`);
+    // pengujian untuk delete mahasiswa
+    it("should delete a student", async () => {
+      const response = await request(app).delete(`/siswa/${insertedId}`);
 
-    // periksa response body sesuai dengan response yang diharapkan
-    if (response.body.status) {
-      // jika status true maka response harus berhasil
-      expect(response.body).toHaveProperty("status", true);
-      expect(response.body).toHaveProperty("msg", "Delete Successfull");
-    } else {
-      // jika status false, maka response harus gagal
-      expect(response.body).toHaveProperty("status", false);
-      expect(response.body).toHaveProperty("msg", "Delete Failed");
-    }
+      // periksa response body sesuai dengan response yang diharapkan
+      if (response.body.status) {
+        // jika status true maka response harus berhasil
+        expect(response.body).toHaveProperty("status", true);
+        expect(response.body).toHaveProperty("msg", "Delete Successfull");
+      } else {
+        // jika status false, maka response harus gagal
+        expect(response.body).toHaveProperty("status", false);
+        expect(response.body).toHaveProperty("msg", "Delete Failed");
+      }
 
-    //pastikan data sudah dihapus didatabase
-    const selectQuery = `SELECT * FROM siswa WHERE id = ${insertedId}`;
-    const selectResult = await new Promise((resolve) => {
-      conn.query(selectQuery, (err, result) => {
-        resolve(result);
+      //pastikan data sudah dihapus didatabase
+      const selectQuery = `SELECT * FROM siswa WHERE id = ${insertedId}`;
+      const selectResult = await new Promise((resolve) => {
+        conn.query(selectQuery, (err, result) => {
+          resolve(result);
+        });
       });
+      expect(selectResult.length).toBe(0);
     });
-    expect(selectResult.length).toBe(0);
-  });
 
-  afterAll(() => {
-    conn.end();
+    afterAll(() => {
+      conn.end();
+    });
   });
 });
